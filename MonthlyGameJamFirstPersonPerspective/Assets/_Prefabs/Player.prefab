@@ -131,9 +131,10 @@ MonoBehaviour:
   whatCanBePickedUp:
     serializedVersion: 2
     m_Bits: 512
-  pickupDistance: 5
+  pickupDistance: 3
   floorDetector: {fileID: 650719112910335427}
   itemHolder: {fileID: 3735333811517495382}
+  camera: {fileID: 650719112831948653}
 --- !u!1 &650719112831948643
 GameObject:
   m_ObjectHideFlags: 0
