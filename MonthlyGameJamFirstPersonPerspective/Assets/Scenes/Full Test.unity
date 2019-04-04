@@ -321,7 +321,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 0.7402677, b: 0.4764151, a: 1}
   m_Intensity: 0.05
   m_Range: 10
   m_SpotAngle: 30
@@ -510,6 +510,8 @@ GameObject:
   - component: {fileID: 860503223}
   - component: {fileID: 860503226}
   - component: {fileID: 860503227}
+  - component: {fileID: 860503228}
+  - component: {fileID: 860503229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -595,7 +597,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   headBob: 1
   bobbingSpeed: 0.2
-  bobbingAmount: 0.15
+  bobbingAmount: 0.1
   midpoint: 0.6
   speedMult: 1
 --- !u!114 &860503227
@@ -605,13 +607,92 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 860503222}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d6459c94e45b78f49b4f9e317f0b3b63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1370630623}
-  sensitivity: 5
+  sensitivity: 10
+--- !u!114 &860503228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860503222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: 93c0c22cc7b8dd7448579b9fd9dc5e50, type: 2}
+--- !u!114 &860503229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860503222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 011d5d1a6f375b04595d2f7109ea0abf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HorizontalBobRange: 0.33
+  VerticalBobRange: 0.33
+  Bobcurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1.5
+      value: -1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 2
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  VerticaltoHorizontalRatio: 1
 --- !u!1 &882368106
 GameObject:
   m_ObjectHideFlags: 0
@@ -1034,7 +1115,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 0.7402677, b: 0.4764151, a: 1}
   m_Intensity: 0.5
   m_Range: 10
   m_SpotAngle: 30
@@ -1112,6 +1193,7 @@ MonoBehaviour:
   speed: 5
   sprintSpeedMultiplier: 1.5
   jumpVelocity: 5
+  camera: {fileID: 860503224}
   floorDetector: {fileID: 910034454}
 --- !u!136 &1370630625
 CapsuleCollider:
