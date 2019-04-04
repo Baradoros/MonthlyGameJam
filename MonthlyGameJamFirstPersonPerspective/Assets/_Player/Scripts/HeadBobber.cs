@@ -41,6 +41,10 @@ public class HeadBobber : MonoBehaviour {
 			cSharpConversion.y = midpoint;
 		}
 
+
+        // If this is true, then we are at the bottom of the bob. Use for footstep sounds
+        // if (waveslice < -0.9f)
+        
 		transform.localPosition = cSharpConversion;
 	}
 }
