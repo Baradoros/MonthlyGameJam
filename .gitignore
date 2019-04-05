@@ -35,6 +35,12 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
+# Code Editor created
+.idea
+
+# MAC OSX
+.DS_Store
+
 # FMOD
 ## Don't track log files
 fmod.log
