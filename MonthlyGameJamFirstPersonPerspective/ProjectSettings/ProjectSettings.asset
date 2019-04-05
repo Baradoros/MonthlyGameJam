@@ -531,6 +531,7 @@ PlayerSettings:
     1: CROSS_PLATFORM_INPUT;dUI_DoozyUI
     4: CROSS_PLATFORM_INPUT;MOBILE_INPUT
     7: CROSS_PLATFORM_INPUT;MOBILE_INPUT
+    13: dUI_DoozyUI
     14: MOBILE_INPUT
   platformArchitecture: {}
   scriptingBackend: {}
