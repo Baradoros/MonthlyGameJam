@@ -34,3 +34,17 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# FMOD
+## Don't track log files
+fmod.log
+fmod_editor.log
+## Don't track settings, cache, or additional folders
+**/Resources/**
+## note: holdDirectory.MD is ensure the folder is still created and the .meta is tracked
+!**/Resources/holdDirectory.*.*
+#!**/Resources/holdDirectory.MD.meta
+## Keep user directories local per user, allow Banks to be tracked
+**/StreamingAssets/**
+## note: holdDirectory.MD is ensure the folder is still created and the .meta is tracked
+!**/StreamingAssets/holdDirectory.*.*
