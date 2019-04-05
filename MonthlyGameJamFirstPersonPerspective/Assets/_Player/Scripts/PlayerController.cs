@@ -2,33 +2,39 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class PlayerController : MonoBehaviour {
 
-	public float speed = 4f;
+    public float speed = 4f;
     public float sprintSpeedMultiplier = 2f;
-	public float jumpVelocity = 5f;
+    public float jumpVelocity = 5f;
+
     [Space]
+    [Header("References")]
+    public Transform floorDetector;
+    public Transform itemHolder;
     public Camera camera;
-	public Transform floorDetector;
 
-	private Rigidbody rb;
-	private HeadBobber hb;
+    private Rigidbody rb;
+    private HeadBobber hb;
+    private GameObject heldItem;
 
-	void Awake() {
-		Cursor.lockState = CursorLockMode.Locked;
-		rb = GetComponent<Rigidbody>();
-		hb = GetComponentInChildren<HeadBobber>();
-	}
+    void Awake() {
+        Cursor.lockState = CursorLockMode.Locked;
+        rb = GetComponent<Rigidbody>();
+        hb = GetComponentInChildren<HeadBobber>();
+        camera = GetComponentInChildren<Camera>();
+    }
 
-	void Update() {
-		if (IsGrounded())
-			hb.enabled = true;
-		else
-			hb.enabled = false;
-	}
+    void Update() {
+        if (IsGrounded())
+            hb.enabled = true;
+        else
+            hb.enabled = false;
+    }
 
-	void FixedUpdate() {
+    void FixedUpdate() {
         HandleMovement();
         HandleLook();
 
@@ -74,11 +80,11 @@ public class PlayerController : MonoBehaviour {
 
     // Raycast down to see if player is standing on a collider
     public bool IsGrounded() {
-		if (Physics.Raycast(floorDetector.position, Vector3.down, 0.05f))
-			return true;
-		else
-			return false;
-	}
+        if (Physics.Raycast(floorDetector.position, Vector3.down, 0.05f))
+            return true;
+        else
+            return false;
+    }
 
 
     // Don't ask me how this works it just keeps the camera from rotationg 360 degrees on the x-axis
@@ -95,6 +101,24 @@ public class PlayerController : MonoBehaviour {
         q.x = Mathf.Tan(0.5f * Mathf.Deg2Rad * angleX);
 
         return q;
+    }
+
+}
+
+
+[CustomEditor(typeof(PlayerController))]
+public class PlayerControllerEditor : Editor {
+
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+    }
+
+    private void OnSceneGUI() {
+        PlayerController player = (PlayerController)target;
+
+        // Draw a line in scene view to represent pickup distance and direction
+        Handles.color = Color.red;
+       // Handles.DrawLine(player.camera.transform.position, player.camera.transform.position + new Vector3(0, 0, player.pickupDistance));
     }
 
 }
