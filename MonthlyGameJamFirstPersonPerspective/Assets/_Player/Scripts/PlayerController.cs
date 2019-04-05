@@ -9,9 +9,6 @@ public class PlayerController : MonoBehaviour {
     public float speed = 4f;
     public float sprintSpeedMultiplier = 2f;
     public float jumpVelocity = 5f;
-    [Tooltip("Player compares objects to this LayerMask to determine what can be picked up")]
-    public LayerMask whatCanBePickedUp;
-    public float pickupDistance;
 
     [Space]
     [Header("References")]
@@ -35,15 +32,6 @@ public class PlayerController : MonoBehaviour {
             hb.enabled = true;
         else
             hb.enabled = false;
-
-        if (Input.GetButtonDown("Fire1")) {
-            if (heldItem != null) {
-                PickUpObject();
-            }
-            else {
-                DropHeldObject();
-            }
-        }
     }
 
     void FixedUpdate() {
@@ -90,29 +78,6 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    private void PickUpObject() {
-        Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        RaycastHit hit;
-        // Check to see if we're aiming at something that is in range and can be picked up
-        // If so, pick it up
-        if (Physics.Raycast(ray, out hit, pickupDistance, whatCanBePickedUp)) {
-            if (heldItem == null) {
-                heldItem = hit.collider.gameObject;
-                heldItem.transform.SetParent(transform);
-                heldItem.transform.position = itemHolder.transform.position;
-            }
-
-        }
-
-    }
-
-    private void DropHeldObject() {
-        if (heldItem != null) {
-            heldItem.transform.parent = null;
-            heldItem = null;
-        }
-    }
-
     // Raycast down to see if player is standing on a collider
     public bool IsGrounded() {
         if (Physics.Raycast(floorDetector.position, Vector3.down, 0.05f))
@@ -153,7 +118,7 @@ public class PlayerControllerEditor : Editor {
 
         // Draw a line in scene view to represent pickup distance and direction
         Handles.color = Color.red;
-        Handles.DrawLine(player.camera.transform.position, player.camera.transform.position + new Vector3(0, 0, player.pickupDistance));
+       // Handles.DrawLine(player.camera.transform.position, player.camera.transform.position + new Vector3(0, 0, player.pickupDistance));
     }
 
 }
