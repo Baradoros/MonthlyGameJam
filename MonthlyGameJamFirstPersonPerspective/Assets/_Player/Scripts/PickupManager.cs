@@ -38,7 +38,7 @@ public class PickupManager : MonoBehaviour
             Rigidbody heldRB = heldItem.GetComponent<Rigidbody>();
             if (heldRB != null) heldRB.isKinematic = true;
             heldItem.transform.SetParent(transform);
-            heldItem.transform.localPosition = Vector3.zero;
+            heldItem.transform.localPosition = transform.localPosition;
         }
     }
 

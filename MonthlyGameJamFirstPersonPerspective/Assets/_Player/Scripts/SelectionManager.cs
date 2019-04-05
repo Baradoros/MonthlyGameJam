@@ -33,7 +33,7 @@ public class SelectionManager : MonoBehaviour
     }
 
     private void CurrentTargetedObject()
-    {
+    {        
         // from camera to the center of the screen based on where we are 'looking'
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
