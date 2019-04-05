@@ -35,7 +35,8 @@ public class PickupManager : MonoBehaviour
         if (selectedObj != null && heldItem == null) 
         {
             heldItem = selectedObj;
-            heldItem.GetComponent<Rigidbody>().isKinematic = true;
+            Rigidbody heldRB = heldItem.GetComponent<Rigidbody>();
+            if (heldRB != null) heldRB.isKinematic = true;
             heldItem.transform.SetParent(transform);
             heldItem.transform.localPosition = Vector3.zero;
         }
@@ -46,14 +47,16 @@ public class PickupManager : MonoBehaviour
         if (heldItem != null)
         {
             heldItem.transform.SetParent(null);
-            heldItem.GetComponent<Rigidbody>().isKinematic = false;
+            Rigidbody heldRB = heldItem.GetComponent<Rigidbody>();
+            if (heldRB != null) heldRB.isKinematic = false;
             heldItem = null;
         }
     }
 
+    // called when an object is selectable from the SelectionManager script
     private void SelectionManagerOnOnObjectSelected(GameObject obj)
     {
-        if (obj) Debug.Log(obj.name + " is selected");
+        // if (obj) Debug.Log(obj.name + " is selected");
         selectedObj = obj;
     }
 }
