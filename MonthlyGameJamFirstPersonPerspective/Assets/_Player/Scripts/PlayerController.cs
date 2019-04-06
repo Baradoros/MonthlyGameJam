@@ -20,6 +20,9 @@ public class PlayerController : MonoBehaviour {
     private HeadBobber hb;
     private GameObject heldItem;
 
+    [HideInInspector]
+    public bool IsRotatingHeldItem = false; //Returns true if player is currently rotating their object
+
     void Awake() {
         Cursor.lockState = CursorLockMode.Locked;
         rb = GetComponent<Rigidbody>();
@@ -45,11 +48,14 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void HandleLook() {
-        float y = Input.GetAxisRaw("Mouse X");
-        float x = -Input.GetAxisRaw("Mouse Y");
-        transform.Rotate(0, y, 0);
-        camera.transform.Rotate(x, 0, 0);
-        camera.transform.localRotation = ClampRotationAroundXAxis(camera.transform.localRotation);
+        if (!IsRotatingHeldItem)
+        {
+            float y = Input.GetAxisRaw("Mouse X");
+            float x = -Input.GetAxisRaw("Mouse Y");
+            transform.Rotate(0, y, 0);
+            camera.transform.Rotate(x, 0, 0);
+            camera.transform.localRotation = ClampRotationAroundXAxis(camera.transform.localRotation);
+        }
     }
 
     private void HandleMovement() {

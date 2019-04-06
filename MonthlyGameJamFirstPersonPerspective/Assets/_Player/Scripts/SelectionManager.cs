@@ -6,6 +6,8 @@ public class SelectionManager : MonoBehaviour
     [SerializeField] private LayerMask selectableLayers; // layers an object is on, that make it selectable
     [SerializeField] private Material highlightedMaterial; // material to place on selectable object
 
+    [Header("Selection Variables")]
+    public float SelectionRange;
     public GameObject currentSelection;
     [SerializeField] private Material originalMaterial; // store original material so we can return it when not selected
 
@@ -45,8 +47,8 @@ public class SelectionManager : MonoBehaviour
         {
             var selection = hit.transform.gameObject;
 
-            // check to see if the hit object is on a selectableLayer
-            if (IsInLayerMask(selection.layer, selectableLayers))
+            // check to see if the hit object is on a selectableLayer and within range
+            if (IsInLayerMask(selection.layer, selectableLayers) && Vector3.Distance(transform.position, hit.transform.position) < SelectionRange)
             {
                 
                 // identifying this is selectable
