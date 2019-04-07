@@ -4,46 +4,27 @@ ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: //RootNode
-    100002: Cube
-    100004: Cube_001
-    100006: Cylinder_000
-    100008: Cylinder_001
-    100010: Cylinder_002
     400000: //RootNode
-    400002: Cube
-    400004: Cube_001
-    400006: Cylinder_000
-    400008: Cylinder_001
-    400010: Cylinder_002
-    2100000: unnamed
-    2300000: Cube
-    2300002: Cube_001
-    2300004: Cylinder_000
-    2300006: Cylinder_001
-    2300008: Cylinder_002
-    3300000: Cube
-    3300002: Cube_001
-    3300004: Cylinder_000
-    3300006: Cylinder_001
-    3300008: Cylinder_002
+    2100000: Material_004
+    2100002: Material__TexturesCom_CliffRock_A_2x2_1K_albedo_tif
+    2300000: //RootNode
+    3300000: //RootNode
     4300000: Cylinder_000
-    4300002: Cube_001
-    4300004: Cylinder_002
-    4300006: Cylinder_001
-    4300008: Cube
-    6400000: Cube
-    6400002: Cube_001
-    6400004: Cylinder_000
-    6400006: Cylinder_001
-    6400008: Cylinder_002
+    4300002: Cylinder
+    6400000: //RootNode
     7400000: Default Take
     9500000: //RootNode
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: unnamed
+    second: {fileID: 2100000, guid: dd3aa2cb1e125a14aa49b6f5e17232b2, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -75,7 +56,7 @@ ModelImporter:
     useSRGBMaterialColor: 1
     importVisibility: 1
     importBlendShapes: 1
-    importCameras: 0
+    importCameras: 1
     importLights: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
@@ -90,7 +71,7 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 1
+    previousCalculatedGlobalScale: 2
     hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
