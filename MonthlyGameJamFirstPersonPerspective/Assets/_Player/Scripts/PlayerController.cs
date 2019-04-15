@@ -6,8 +6,10 @@ using UnityEditor;
 
 public class PlayerController : MonoBehaviour {
 
-    public float speed = 4f;
+    public float maxSpeed = 4f;
+    private float speed;
     public float sprintSpeedMultiplier = 2f;
+    public float crouchSpeedMultiplier = 0.5f;
     public float jumpVelocity = 5f;
 
     [Space]
@@ -27,6 +29,7 @@ public class PlayerController : MonoBehaviour {
         hb = GetComponentInChildren<HeadBobber>();
         camera = GetComponentInChildren<Camera>();
         cc = GetComponent<CapsuleCollider>();
+        speed = maxSpeed;
     }
 
     void Update() {
@@ -86,10 +89,12 @@ public class PlayerController : MonoBehaviour {
         if(Input.GetButtonDown("Crouch"))
         {
             cc.height = 1;
+            speed = maxSpeed * crouchSpeedMultiplier;
         }
         if(Input.GetButtonUp("Crouch"))
         {
             cc.height = 2;
+            speed = maxSpeed;
         }
 
     }
