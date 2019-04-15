@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour {
     private GameObject heldItem;
     private CapsuleCollider cc;
     private Animator camAnim;
+    private bool canJump = true;
 
     void Awake() {
         Cursor.lockState = CursorLockMode.Locked;
@@ -73,8 +74,10 @@ public class PlayerController : MonoBehaviour {
         camAnim.SetFloat("Speed", Mathf.Max(maxSpeed * 0.9f, Mathf.Abs(forward), Mathf.Abs(strafe)));
 
         if (IsGrounded()) {
+            // For head bobbing animation. Only plays when player is on the ground
             camAnim.SetBool("isGrounded", true);
-            if (Input.GetAxisRaw("Jump") > 0) {
+
+            if (Input.GetAxisRaw("Jump") > 0 && canJump) {
                 rb.velocity = new Vector3(rb.velocity.x, jumpVelocity, rb.velocity.z);
             }
         } else {
@@ -85,12 +88,14 @@ public class PlayerController : MonoBehaviour {
 
     private void Crouch() {
         if (Input.GetButtonDown("Crouch")) {
+            canJump = false;
             cc.height = 1;
             cc.center = new Vector3(0, -0.5f, 0);
             camAnim.SetTrigger("Crouch");
             speed = maxSpeed * crouchSpeedMultiplier;
         }
         if (Input.GetButtonUp("Crouch")) {
+            canJump = true;
             cc.height = 2;
             cc.center = Vector3.zero;
             camAnim.SetTrigger("Uncrouch");
