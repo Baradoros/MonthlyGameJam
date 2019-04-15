@@ -10,40 +10,36 @@ public class PlayerController : MonoBehaviour {
     private float speed;
     public float sprintSpeedMultiplier = 2f;
     public float crouchSpeedMultiplier = 0.5f;
+    public float crouchSmooth = 1.0f;
     public float jumpVelocity = 5f;
 
     [Space]
     [Header("References")]
     public Transform floorDetector;
     public Transform itemHolder;
-    public Camera camera;
+    public Camera cam;
 
     private Rigidbody rb;
-    private HeadBobber hb;
     private GameObject heldItem;
     private CapsuleCollider cc;
+    private Animator camAnim;
 
     void Awake() {
         Cursor.lockState = CursorLockMode.Locked;
         rb = GetComponent<Rigidbody>();
-        hb = GetComponentInChildren<HeadBobber>();
-        camera = GetComponentInChildren<Camera>();
+        cam = GetComponentInChildren<Camera>();
         cc = GetComponent<CapsuleCollider>();
+        camAnim = cam.GetComponent<Animator>();
         speed = maxSpeed;
     }
 
     void Update() {
-        if (IsGrounded())
-            hb.enabled = true;
-        else
-            hb.enabled = false;
+        Crouch();
     }
 
     void FixedUpdate() {
         HandleMovement();
         HandleLook();
-        Crouch();
-
         // Hardcoding just for dev purposes calm down
         if (Input.GetKeyDown("escape"))
             Cursor.lockState = CursorLockMode.None;
@@ -54,51 +50,52 @@ public class PlayerController : MonoBehaviour {
         float y = Input.GetAxisRaw("Mouse X");
         float x = -Input.GetAxisRaw("Mouse Y");
         transform.Rotate(0, y, 0);
-        camera.transform.Rotate(x, 0, 0);
-        camera.transform.localRotation = ClampRotationAroundXAxis(camera.transform.localRotation);
+        cam.transform.Rotate(x, 0, 0);
+        cam.transform.localRotation = ClampRotationAroundXAxis(cam.transform.localRotation);
     }
 
     private void HandleMovement() {
         float forward;
         float strafe;
 
+
         if (Input.GetButton("Sprint")) {
-            hb.speedMult = sprintSpeedMultiplier;
             forward = Input.GetAxisRaw("Horizontal") * speed * sprintSpeedMultiplier;
             strafe = Input.GetAxisRaw("Vertical") * speed * sprintSpeedMultiplier;
         }
         else {
-            hb.speedMult = 1;
             forward = Input.GetAxisRaw("Horizontal") * speed;
             strafe = Input.GetAxisRaw("Vertical") * speed;
         }
 
         Vector3 move = new Vector3(forward, rb.velocity.y, strafe);
         rb.velocity = transform.TransformDirection(move);
+        camAnim.SetFloat("Speed", Mathf.Max(maxSpeed * 0.9f, Mathf.Abs(forward), Mathf.Abs(strafe)));
 
-        if (Input.GetAxisRaw("Jump") > 0) {
-            if (IsGrounded()) {
+        if (IsGrounded()) {
+            camAnim.SetBool("isGrounded", true);
+            if (Input.GetAxisRaw("Jump") > 0) {
                 rb.velocity = new Vector3(rb.velocity.x, jumpVelocity, rb.velocity.z);
             }
-
+        } else {
+            camAnim.SetBool("isGrounded", false);
         }
+
     }
- 
-    private void Crouch()
-    {
-        if(Input.GetButtonDown("Crouch"))
-        {
+
+    private void Crouch() {
+        if (Input.GetButtonDown("Crouch")) {
             cc.height = 1;
             cc.center = new Vector3(0, -0.5f, 0);
+            camAnim.SetTrigger("Crouch");
             speed = maxSpeed * crouchSpeedMultiplier;
         }
-        if(Input.GetButtonUp("Crouch"))
-        {
+        if (Input.GetButtonUp("Crouch")) {
             cc.height = 2;
             cc.center = Vector3.zero;
+            camAnim.SetTrigger("Uncrouch");
             speed = maxSpeed;
         }
-
     }
 
     // Raycast down to see if player is standing on a collider
@@ -141,7 +138,7 @@ public class PlayerControllerEditor : Editor {
 
         // Draw a line in scene view to represent pickup distance and direction
         Handles.color = Color.red;
-       // Handles.DrawLine(player.camera.transform.position, player.camera.transform.position + new Vector3(0, 0, player.pickupDistance));
+        // Handles.DrawLine(player.camera.transform.position, player.camera.transform.position + new Vector3(0, 0, player.pickupDistance));
     }
 
 }
