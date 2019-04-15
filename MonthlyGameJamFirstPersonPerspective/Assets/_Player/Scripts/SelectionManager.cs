@@ -1,38 +1,22 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SelectionManager : MonoBehaviour
 {
-    [SerializeField] private LayerMask selectableLayers; // layers an object is on, that make it selectable
-    [SerializeField] private Material highlightedMaterial; // material to place on selectable object
+    public GameObject currentActionableObject; // action dot is currently over this object
+    private Transform holderT; // transform that objects are held in (parent for them)
 
-    public GameObject currentSelection;
-    [SerializeField] private Material originalMaterial; // store original material so we can return it when not selected
-
-    // Event to notify listeners that there is a selectable object, so they can do something with that information as needed
-    public static event Action<GameObject> OnObjectSelected = delegate {};
-    
-    private void Update()
+    private void Awake()
     {
-        // when an object is not selectale (e.g. not on our raycast/red-dot return it's material
-        // @TODO we may want to just change the UI (e.g. make the red dot green?)
-        if (currentSelection != null)
-        {
-            Renderer selectionRenderer = currentSelection.GetComponent<Renderer>();
-            if (selectionRenderer == null) return;
-            
-            selectionRenderer.material = originalMaterial;
-            currentSelection = null;
-        }
-
-        // using raycast, we will get the screen point center
-        CurrentTargetedObject();
-        
-        // send event for other scripts that may want to know what is selected (e.g. in hand)
-        OnObjectSelected(currentSelection);
+        holderT = GameObject.FindWithTag("Holder").transform;
     }
 
-    private void CurrentTargetedObject()
+    private void Update()
+    {
+        CurrentTargetedObject();
+        ExecuteInteraction();
+    }
+
+    private bool CurrentTargetedObject()
     {
         // from camera to the center of the screen based on where we are 'looking'
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -43,30 +27,40 @@ public class SelectionManager : MonoBehaviour
         // get object where we are 'looking'
         if (Physics.Raycast(ray, out hit))
         {
-            var selection = hit.transform.gameObject;
-
-            // check to see if the hit object is on a selectableLayer
-            if (IsInLayerMask(selection.layer, selectableLayers))
+            var selectable = hit.transform.GetComponent<IInteractable>();
+            
+            if (selectable is IInteractable) 
             {
-                
-                // identifying this is selectable
-                // @TODO as mentioned above, we may want this to change the UI cursor/indicator
-                //    and not the actual object.
-                Renderer selectionRenderer = selection.GetComponent<Renderer>();
+                // sets property in this script
+                currentActionableObject = hit.transform.gameObject;
 
-                if (selectionRenderer != null)
-                {
-                    // store the original material
-                    originalMaterial = selectionRenderer.material;
-                    
-                    // use our designated highlighted material.
-                    selectionRenderer.material = highlightedMaterial;
-                }
-
-                // sets object in this script
-                currentSelection = selection;
+                return true;
             }
-        } 
+        }
+        
+        // nulls property in this script
+        currentActionableObject = null;
+        return false;
+    }
+    
+    private void ExecuteInteraction()
+    {
+        if (Input.GetButtonDown("Fire1")) 
+        {
+            Debug.Log("Fire1");
+            
+            if (currentActionableObject != null) 
+            {
+                currentActionableObject.GetComponent<IInteractable>()?.Interact();
+                currentActionableObject.GetComponent<HoldableObject>()?.PickUpObject();
+            }
+            else
+            {
+                // can drop heldObject by clicking any open place
+                if (holderT.childCount > 0)
+                    holderT.GetChild(0).GetComponent<HoldableObject>()?.DropObject();
+            }
+        }
     }
     
     /// <summary>
