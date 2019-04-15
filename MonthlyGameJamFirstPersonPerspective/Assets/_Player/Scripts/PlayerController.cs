@@ -19,12 +19,14 @@ public class PlayerController : MonoBehaviour {
     private Rigidbody rb;
     private HeadBobber hb;
     private GameObject heldItem;
+    private CapsuleCollider cc;
 
     void Awake() {
         Cursor.lockState = CursorLockMode.Locked;
         rb = GetComponent<Rigidbody>();
         hb = GetComponentInChildren<HeadBobber>();
         camera = GetComponentInChildren<Camera>();
+        cc = GetComponent<CapsuleCollider>();
     }
 
     void Update() {
@@ -37,6 +39,7 @@ public class PlayerController : MonoBehaviour {
     void FixedUpdate() {
         HandleMovement();
         HandleLook();
+        Crouch();
 
         // Hardcoding just for dev purposes calm down
         if (Input.GetKeyDown("escape"))
@@ -76,6 +79,19 @@ public class PlayerController : MonoBehaviour {
             }
 
         }
+    }
+ 
+    private void Crouch()
+    {
+        if(Input.GetButtonDown("Crouch"))
+        {
+            cc.height = 1;
+        }
+        if(Input.GetButtonUp("Crouch"))
+        {
+            cc.height = 2;
+        }
+
     }
 
     // Raycast down to see if player is standing on a collider
