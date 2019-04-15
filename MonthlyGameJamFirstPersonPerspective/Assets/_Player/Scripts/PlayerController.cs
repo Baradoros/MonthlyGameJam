@@ -89,11 +89,13 @@ public class PlayerController : MonoBehaviour {
         if(Input.GetButtonDown("Crouch"))
         {
             cc.height = 1;
+            cc.center = new Vector3(0, -0.5f, 0);
             speed = maxSpeed * crouchSpeedMultiplier;
         }
         if(Input.GetButtonUp("Crouch"))
         {
             cc.height = 2;
+            cc.center = Vector3.zero;
             speed = maxSpeed;
         }
 
