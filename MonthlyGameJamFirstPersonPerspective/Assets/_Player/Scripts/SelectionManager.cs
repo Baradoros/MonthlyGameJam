@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class SelectionManager : MonoBehaviour
 {
     public GameObject currentActionableObject; // action dot is currently over this object
     private Transform holderT; // transform that objects are held in (parent for them)
+    [SerializeField] private Image actionDotImage;
 
     private void Awake()
     {
         holderT = GameObject.FindWithTag("Holder").transform;
+        actionDotImage.color = Color.red;
     }
 
     private void Update()
@@ -33,12 +36,16 @@ public class SelectionManager : MonoBehaviour
             {
                 // sets property in this script
                 currentActionableObject = hit.transform.gameObject;
+                
+                if (selectable.Holdable()) actionDotImage.color = Color.blue;
+                if (selectable.Actionable()) actionDotImage.color = Color.green;
 
                 return true;
             }
         }
         
         // nulls property in this script
+        actionDotImage.color = Color.red;
         currentActionableObject = null;
         return false;
     }
