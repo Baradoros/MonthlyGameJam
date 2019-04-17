@@ -12,6 +12,16 @@ public class BasicCubeHoldable : HoldableObject, IInteractable
         return b.testNum == testNum;
     }
 
+    public bool Holdable()
+    {
+        return true;
+    }
+
+    public bool Actionable()
+    {
+        return false;
+    }
+
     public void Interact()
     {
         

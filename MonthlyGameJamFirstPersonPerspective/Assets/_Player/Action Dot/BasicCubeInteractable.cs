@@ -11,7 +11,17 @@ public class BasicCubeInteractable : MonoBehaviour, IInteractable
     {
         holderT = GameObject.FindWithTag("Holder").transform;
     }
-    
+
+    public bool Holdable()
+    {
+        return false;
+    }
+
+    public bool Actionable()
+    {
+        return true;
+    }
+
     public void Interact()
     {
         Debug.Log("This Cube is Interactable");
@@ -29,6 +39,8 @@ public class BasicCubeInteractable : MonoBehaviour, IInteractable
             if (holdableObject.HoldableInteractionTest(this))
             {
                 Debug.Log("You have the right cube");
+                holdableObject.DropObject();
+                holdableObject.transform.position = transform.position + Vector3.up;
             }
             else
             {
